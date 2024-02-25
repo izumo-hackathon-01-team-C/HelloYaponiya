@@ -1,9 +1,11 @@
 from typing import BinaryIO
 import fastapi
 
+
 import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from pydantic import BaseModel
 
 
 app = fastapi.FastAPI()
@@ -15,6 +17,14 @@ class FormTemplate( ABC ):
     def fill( self, **kwargs ):
         """"A function to fill existing form with user's data stated in kwargs"""
         raise NotImplemented
+
+# API Models
+class TemplateBuildSources( BaseModel ):
+    name: str
+    markup_json: str
+    localization_json: str
+    metadata_json: str
+    template_xlsx_file: bytes 
 
 # Models
 @dataclass
@@ -40,33 +50,28 @@ class Section:
     cathegories: list[ Cathegory ] = field( default_factory=list )
 
 # Server globals
-templates:      dict[ str, MarkedTemplate ]     = []
-localizations:  dict[ str, Localization ]       = [] 
-sections:       list[ Section ]                 = []
+#TODO: push to App
+app.templates       = [] #       dict[ str, MarkedTemplate ]    
+app.localizations   = [] # :     dict[ str, Localization ]       
+app.sections        = [] # :     list[ Section ]                 
 #TODO: recycling_bin for deleted objects?
 
 # API Endpoints
 @app.post( path="/template/create" )
-def create_template( name: str,
-                     markup_json: str, 
-                     localization_json: str, 
-                     metadata_json: str, 
-                     template_xlsx_file: BinaryIO ) -> json:
+def create_template( source: TemplateBuildSources ) -> str:
     """A method to create template for form in Adalo/PythonServer"""
-    global templates, localizations, sections
 
-    if name in templates.keys(): 
+    if source.name in app.templates.keys(): 
         raise fastapi.HTTPException( status_code=fastapi.status.HTTP_400_BAD_REQUEST,
-                                     detail=f"Template with name '{name}' already exists. "
+                                     detail=f"Template with name '{source.name}' already exists. "
                                              "To update it use '/temlate/update' endpoint" )
     
     return json.dumps( dict() )
 
 @app.post( path="/template/update" )
-def update_template( name: str,
-                     markup_json: str|None = None, 
-                     localization_json: str|None = None, 
-                     metadata_json: str|None = None, 
-                     template_xlsx_file: BinaryIO|None = None ) -> json:
+def update_template( source: TemplateBuildSources ) -> str:
     """"""
+    if source.name == "" or source.name == None:
+        raise fastapi.HTTPException( status_code=fastapi.status.HTTP_400_BAD_REQUEST,
+                                     detail="No name provided" )
     return json.dumps( dict() )
