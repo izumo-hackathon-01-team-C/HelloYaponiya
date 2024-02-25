@@ -4,16 +4,18 @@ from tortoise import fields
 
 class CategoryDBModel(Model):
     id = fields.IntField(pk=True)
+
     name = fields.CharField(max_length=100)
 
 
 class SectionDBModel(Model):
     id = fields.IntField(pk=True)
+
     name = fields.CharField(max_length=100)
     category_id = fields.ForeignKeyField('CategoryDBModel', related_name='section')
 
 
-class FormTemplatesDBModel(Model):
+class FormTemplateDBModel(Model):
     id = fields.IntField(pk=True)
 
     name = fields.CharField(max_length=200)
