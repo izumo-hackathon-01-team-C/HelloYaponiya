@@ -1,5 +1,5 @@
 {
-    "DateYear": "F7",
+    "DateYear":  { "FieldID": "F7", "Type": "str" }
     "DateMonth": "I7",
     "DateDay": "K7",
     "VisitorAddress": "C8",
@@ -9,5 +9,12 @@
     "VisitorDOBYear": "G11",
     "VisitorDOBMonth": "I11",
     "VisitorDOBDay": "K11",
-    "Relation": { "Person": "C14", "Representive": "C16", "Other": { "CheckboxID": "F16", "ValueID": "I16"  }  }
+    "VisitorRelation" : {
+       "Type": "CheckboxList",
+       "Fields": {
+          "Person": { "Type": "Checkbox", "FieldID": "C14" },
+          "Representive": { "Type": "Checkbox", "FieldID": "C16" },
+          "Other": { "Type": "CheckboxWithValue", "FieldID": "F16", "ValueFieldID": "I16" }    
+       }
+    }
 }
