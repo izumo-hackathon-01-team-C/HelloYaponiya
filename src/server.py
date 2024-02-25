@@ -4,6 +4,7 @@ from tortoise import Tortoise
 
 from routers import templates
 from settings import settings
+from database.models import CategoryDBModel
 
 
 async def create_db_client() -> Tortoise:
@@ -26,6 +27,10 @@ def create_app() -> FastAPI:
     async def startup() -> None:
         app.state.db = await create_db_client()
         await app.state.db.generate_schemas()
+
+    @app.on_event('shutdown')
+    async def shutdown() -> None:
+        await app.state.db.close_connections()
 
     return app
 
