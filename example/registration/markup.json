@@ -1,5 +1,5 @@
 {
-    "DateYear":  { "FieldID": "F7", "Type": "str" }
+    "DateYear":  { "FieldID": "F7", "Type": "str", "Required": true, "Value": null }
     "DateMonth": "I7",
     "DateDay": "K7",
     "VisitorAddress": "C8",

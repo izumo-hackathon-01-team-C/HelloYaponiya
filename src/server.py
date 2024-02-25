@@ -30,7 +30,7 @@ class TemplateBuildSources( BaseModel ):
 class Metadata( BaseModel ):
     """Template metadata for versioning and """
     name: str
-    cathegory: str
+    category: str
     section: str
     creation_datetime: datetime
     update_datetime: datetime
@@ -51,7 +51,7 @@ class Localization:
     value: str
 
 @dataclass
-class Cathegory:
+class Category:
     """Adalos app's section's nested divisions"""
     name: str 
     forms: list[ str ] = field( default_factory=list )    
@@ -60,14 +60,7 @@ class Cathegory:
 class Section:
     """Adalos app's main screen section [e.g. Health, Taxes and so on]"""
     name: str
-    cathegories: list[ Cathegory ] = field( default_factory=list )
-
-# Server globals
-#TODO: push to App
-app.templates       = {} #       dict[ str, MarkedTemplate ]    
-app.localizations   = {} # :     dict[ str, Localization ]       
-app.sections        = [] # :     list[ Section ]                 
-#TODO: recycling_bin for deleted objects?
+    categories: list[ Category ] = field( default_factory=list )
 
 # API Endpoints
 @app.post( path="/template/create" )
@@ -78,7 +71,7 @@ def create_template( source: TemplateBuildSources ) -> str:
         raise fastapi.HTTPException( status_code=fastapi.status.HTTP_400_BAD_REQUEST,
                                      detail=f"Template with name '{source.name}' already exists. "
                                              "To update it use '/temlate/update' endpoint" )
-    
+
     return json.dumps( dict() )
 
 @app.post( path="/template/update" )
@@ -92,3 +85,7 @@ def update_template( source: TemplateBuildSources ) -> str:
 @app.post( path="/template/list" )
 def list_templates( ) -> Metadata:
     pass
+
+# # Metadata --
+
+# def met
