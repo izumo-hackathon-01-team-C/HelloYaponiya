@@ -1,0 +1,20 @@
+{
+    "DateYear":  { "FieldID": "F7", "Type": "str", "Required": true, "Value": null }
+    "DateMonth": "I7",
+    "DateDay": "K7",
+    "VisitorAddress": "C8",
+    "VisitorAddressFurigana": "C10",
+    "VisitorName": "C11",
+    "VisitorTelephone": "F9",
+    "VisitorDOBYear": "G11",
+    "VisitorDOBMonth": "I11",
+    "VisitorDOBDay": "K11",
+    "VisitorRelation" : {
+       "Type": "CheckboxList",
+       "Fields": {
+          "Person": { "Type": "Checkbox", "FieldID": "C14" },
+          "Representive": { "Type": "Checkbox", "FieldID": "C16" },
+          "Other": { "Type": "CheckboxWithValue", "FieldID": "F16", "ValueFieldID": "I16" }    
+       }
+    }
+}

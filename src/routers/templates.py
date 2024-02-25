@@ -1,6 +1,7 @@
 import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from datetime import datetime
 
 from pydantic import BaseModel
 
@@ -23,11 +24,20 @@ class FormTemplate(ABC):
 
 # API Models
 class TemplateBuildSources(BaseModel):
+    """Data for building documents templates and storing them in app's structure"""
     name: str
     markup_json: str
     localization_json: str
     metadata_json: str
     template_xlsx_file: bytes
+
+class Metadata( BaseModel ):
+    """Metadata for versioning and organizing structure"""
+    name: str
+    category: str
+    section: str
+    creation_datetime: datetime
+    update_datetime: datetime
 
 
 # Models
