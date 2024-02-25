@@ -1,0 +1,13 @@
+{
+    "DateYear": "F7",
+    "DateMonth": "I7",
+    "DateDay": "K7",
+    "VisitorAddress": "C8",
+    "VisitorAddressFurigana": "C10",
+    "VisitorName": "C11",
+    "VisitorTelephone": "F9",
+    "VisitorDOBYear": "G11",
+    "VisitorDOBMonth": "I11",
+    "VisitorDOBDay": "K11",
+    "Relation": { "Person": "C14", "Representive": "C16", "Other": { "CheckboxID": "F16", "ValueID": "I16"  }  }
+}
