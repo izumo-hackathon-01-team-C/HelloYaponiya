@@ -1,20 +1,29 @@
 {
-    "DateYear":  { "FieldID": "F7", "Type": "str", "Required": true, "Value": null }
-    "DateMonth": "I7",
-    "DateDay": "K7",
-    "VisitorAddress": "C8",
-    "VisitorAddressFurigana": "C10",
-    "VisitorName": "C11",
-    "VisitorTelephone": "F9",
-    "VisitorDOBYear": "G11",
-    "VisitorDOBMonth": "I11",
-    "VisitorDOBDay": "K11",
+    "DateYear":  { "FieldID": "F7", "Type": "str", "Required": true, "Value": null },
+    "DateMonth": { "FieldID": "I7", "Type": "str", "Required": true, "Value": null },
+    "DateDay": { "FieldID": "K7", "Type": "str", "Required": true, "Value": null },
+    "VisitorAddress": { "FieldID": "C8", "Type": "str", "Required": true, "Value": null },
+    "VisitorAddressFurigana": { "FieldID": "C10", "Type": "str", "Required": true, "Value": null },
+    "VisitorName": { "FieldID": "C11", "Type": "str", "Required": true, "Value": null },
+    "VisitorTelephone": { "FieldID": "F9", "Type": "str", "Required": true, "Value": null },
+    "VisitorDOBYear": { "FieldID": "G11", "Type": "str", "Required": true, "Value": null },
+    "VisitorDOBMonth": { "FieldID": "I11", "Type": "str", "Required": true, "Value": null },
+    "VisitorDOBDay": { "FieldID": "K11", "Type": "str", "Required": true, "Value": null },
     "VisitorRelation" : {
-       "Type": "CheckboxList",
+       "Type": "RadioList",
+       "Required": true,
        "Fields": {
-          "Person": { "Type": "Checkbox", "FieldID": "C14" },
-          "Representive": { "Type": "Checkbox", "FieldID": "C16" },
-          "Other": { "Type": "CheckboxWithValue", "FieldID": "F16", "ValueFieldID": "I16" }    
+          "Person": { "Type": "Radio", "FieldID": "C14", "Value": false },
+          "Representive": { "Type": "Radio", "FieldID": "C16", "Value": false },
+          "Other": { 
+            "Type": "RadioWithValue",
+            "FieldID": "F16",
+            "ChildValue": {
+               "Type": "str",
+               "FieldID": "I16", 
+               "Value": null
+            }
+         }    
        }
     }
 }
