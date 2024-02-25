@@ -2,6 +2,7 @@ import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime
+from enum import StrEnum
 
 from pydantic import BaseModel
 
@@ -9,8 +10,22 @@ import fastapi
 from fastapi import Request
 from fastapi.routing import APIRouter
 
+from src.database.models import FormTemplateDBModel
+
 router = APIRouter()
 
+# Enums
+class Languages( StrEnum ):
+    Japanese = "jp"
+    English  = "en"
+    Russian  = "ru"
+    Spain    = "sp"
+    Brasil   = "br"
+    Chineese = "cn"
+    French   = "fr"
+    Vietnamese = "vn"
+    Cambodian  = "cn"
+    Thai       = "??"
 
 # Interfaces
 class FormTemplate(ABC):
@@ -26,10 +41,11 @@ class FormTemplate(ABC):
 class TemplateBuildSources(BaseModel):
     """Data for building documents templates and storing them in app's structure"""
     name: str
-    markup_json: str
+    description: str
+    markup_data: str
     localization_json: str
     metadata_json: str
-    template_xlsx_file: bytes
+    excel_data: bytes
 
 class Metadata( BaseModel ):
     """Metadata for versioning and organizing structure"""
@@ -39,6 +55,15 @@ class Metadata( BaseModel ):
     creation_datetime: datetime
     update_datetime: datetime
 
+class TemplateFillerData( BaseModel ):
+    """Data for filling form template"""
+    lang: Languages
+    json: str
+
+class FillupResult( BaseModel ):
+    lang:   Languages
+    jp:     bytes
+    local:  bytes
 
 # Models
 @dataclass
@@ -71,11 +96,16 @@ class Section:
 def create_template(request: Request, source: TemplateBuildSources) -> str:
     """A method to create template for form in Adalo/PythonServer"""
 
-    if source.name in request.app.templates.keys():
+    if source.name in request.app.state.db.templates.keys(): #TODO: set actual name
         raise fastapi.HTTPException(status_code=fastapi.status.HTTP_400_BAD_REQUEST,
                                     detail=f"Template with name '{source.name}' already exists. "
                                            "To update it use '/temlate/update' endpoint")
-
+    
+    FormTemplateDBModel.
+    source.name
+    source.template_xlsx_file
+    source.markup_json
+     
     return json.dumps(dict())
 
 
@@ -86,3 +116,7 @@ def update_template(request: Request, source: TemplateBuildSources) -> str:
         raise fastapi.HTTPException(status_code=fastapi.status.HTTP_400_BAD_REQUEST,
                                     detail="No name provided")
     return json.dumps(dict())
+
+@router.get( path="/template/fillup/{form_id}" )
+def fillup( request: Request, form_id: str, in_data: TemplateFillerData ) -> FillupResult:
+    return FillupResult( lang=in_data.lang, jp=None, local=None)
