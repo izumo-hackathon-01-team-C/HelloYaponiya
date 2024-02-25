@@ -35,7 +35,7 @@ class FormMetadataDBModel(Model):
     updated_at = fields.DatetimeField(auto_now=True)
 
 
-class LocalizationsDBModel(Model):
+class LocalizationDBModel(Model):
     id = fields.IntField(pk=True)
 
     form_id = fields.ForeignKeyField('FormDBModel', related_name='form_localizations')
