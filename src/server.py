@@ -3,6 +3,7 @@ import fastapi
 
 
 import json
+from datetime import datetime
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pydantic import BaseModel
@@ -26,11 +27,21 @@ class TemplateBuildSources( BaseModel ):
     metadata_json: str
     template_xlsx_file: bytes 
 
+class Metadata( BaseModel ):
+    """Template metadata for versioning and """
+    name: str
+    cathegory: str
+    section: str
+    creation_datetime: datetime
+    update_datetime: datetime
+
 # Models
 @dataclass
 class MarkedTemplate( FormTemplate ): 
     """A class to take user's localized input, de-localize it and fill both JP/Local forms"""
     pass
+
+
 
 @dataclass
 class Localization:
@@ -42,11 +53,13 @@ class Localization:
 @dataclass
 class Cathegory:
     """Adalos app's section's nested divisions"""
+    name: str 
     forms: list[ str ] = field( default_factory=list )    
 
 @dataclass
 class Section:
     """Adalos app's main screen section [e.g. Health, Taxes and so on]"""
+    name: str
     cathegories: list[ Cathegory ] = field( default_factory=list )
 
 # Server globals
@@ -75,3 +88,7 @@ def update_template( source: TemplateBuildSources ) -> str:
         raise fastapi.HTTPException( status_code=fastapi.status.HTTP_400_BAD_REQUEST,
                                      detail="No name provided" )
     return json.dumps( dict() )
+
+@app.post( path="/template/list" )
+def list_templates( ) -> Metadata:
+    pass
