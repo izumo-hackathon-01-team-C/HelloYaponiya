@@ -51,8 +51,8 @@ class Section:
 
 # Server globals
 #TODO: push to App
-app.templates       = [] #       dict[ str, MarkedTemplate ]    
-app.localizations   = [] # :     dict[ str, Localization ]       
+app.templates       = {} #       dict[ str, MarkedTemplate ]    
+app.localizations   = {} # :     dict[ str, Localization ]       
 app.sections        = [] # :     list[ Section ]                 
 #TODO: recycling_bin for deleted objects?
 
