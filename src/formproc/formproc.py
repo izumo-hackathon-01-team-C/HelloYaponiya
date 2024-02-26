@@ -1,44 +1,43 @@
 from datetime import datetime
 from io import BytesIO
+from tempfile import NamedTemporaryFile
 from re import match, compile, sub 
 from asyncio import TaskGroup, create_task
 from asyncio import run as aiorun
 
+
 from openpyxl import load_workbook, Workbook
 from openpyxl.worksheet.worksheet import Worksheet
 from spire import xls
+from spire.xls.common import PdfConformanceLevel, FileFormat
 
 
-from ..database import FormTemplateDBModel, LocalizationDBModel
 from ..routers import Languages
 
 class FormProducer: 
     """A class to fill form template with data and produce form and jp-translated form"""
     def __init__( self,
                  template: bytes,
-                 #markup: dict,
                  lang: Languages,
                  localizations: dict,
                  answer_data: dict ):
         self._locality_jp: dict = localizations[ Languages.Japanese ] 
         self._locality_target: dict = localizations[ lang ] 
         self._template: bytes = template
-        #self._markup = markup
         self._answer_data: dict = answer_data
         self._jp_answer_data: dict = self._translate_jp( answer_data )
         return aiorun( self.create_filled_form_on_current_data )
         
-
     async def create_filled_form_on_current_data( self ):
         """A function to execute asynchronious parallel form"""
         with TaskGroup() as tg:
             jp_coro = tg.create_task( 
-                coro = self._fill(  locality=self._locality_jp,
-                                    answers=self._answer_data )
+                coro = self.create_pdf_from_template( locality=self._locality_jp,
+                                                      answers=self._answer_data )
             )
             local_coro = tg.create_task(
-                coro = self._fill(  locality=self._locality_target,
-                                    answers=self._jp_answer_data  )
+                coro = self.create_pdf_from_template( locality=self._locality_target,
+                                                      answers=self._jp_answer_data  )
             )
         self.jp_doc = jp_coro.result()
         self.target_doc = local_coro.result()
@@ -61,16 +60,19 @@ class FormProducer:
         #TODO: 
         return data_to_translate
     
-    async def _create_pdf( self, wb: Workbook ) -> "AAA":
+    async def create_pdf_from_template( self, locality: dict, answers: dict ) -> bytes:
+        return await self._create_pdf( await self._fill( locality, answers ) )
+
+    async def _create_pdf( self, wb: Workbook ) -> bytes:
+        """Create PDF/A from Workbook"""
         openpxyl_wb_bytes = BytesIO()
         wb.save( openpxyl_wb_bytes )
-        #openpxyl_wb_bytes.getvalue()
         xls_wb = xls.Workbook()
         xls_wb.LoadFromStream( stream=openpxyl_wb_bytes.getvalue() )
-        # workbook.ConverterSetting.PdfConformanceLevel = PdfConformanceLevel.Pdf_A1A
-        # workbook.SaveToFile("ExcelToPDFA.pdf", FileFormat.PDF)
-        #
-        # xls_wb.SaveToFile( )
+        xls_wb.ConverterSetting.PdfConformanceLevel = PdfConformanceLevel.Pdf_A1A
+        inmem_file = NamedTemporaryFile( )
+        xls_wb.SaveToFile( inmem_file.name, FileFormat.PDF )
+        return inmem_file.read()
 
     async def _fill( self, locality: dict, answers: dict ) -> Workbook:
         """A function to fill data in the workbook"""
