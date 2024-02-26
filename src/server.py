@@ -36,8 +36,8 @@ def prepare_fixtures() -> dict:
 def create_app() -> FastAPI:
     app = FastAPI(debug=True)
 
-    app.include_router(templates.router)
-    app.include_router(translations.router)
+    app.include_router(templates.router, tags=['Templates'])
+    app.include_router(translations.router, tags=['Translations'])
 
     @app.on_event('startup')
     async def startup() -> None:

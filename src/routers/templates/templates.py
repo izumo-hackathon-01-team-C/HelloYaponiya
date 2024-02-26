@@ -171,10 +171,10 @@ def fill_up(request: Request, form_id: str, in_data: TemplateFillerData) -> Fill
 
 
 @router.get(path='/template/markup/{markup_name}')
-async def get_markup(markup_name: str) -> dict:
+async def get_markup(markup_name: str) -> list:
 
     @cache
-    def get_markup(form_name: str) -> dict | None:
+    def get_markup(form_name: str) -> list | None:
         with open('src/fixtures/form_pairs.json') as file:
             json_data = json.load(file)
 

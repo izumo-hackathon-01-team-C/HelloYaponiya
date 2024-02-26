@@ -1,29 +1,98 @@
-{
-    "DateYear":  { "FieldID": "F7", "Type": "str", "Required": true, "Value": null },
-    "DateMonth": { "FieldID": "I7", "Type": "str", "Required": true, "Value": null },
-    "DateDay": { "FieldID": "K7", "Type": "str", "Required": true, "Value": null },
-    "VisitorAddress": { "FieldID": "C8", "Type": "str", "Required": true, "Value": null },
-    "VisitorAddressFurigana": { "FieldID": "C10", "Type": "str", "Required": true, "Value": null },
-    "VisitorName": { "FieldID": "C11", "Type": "str", "Required": true, "Value": null },
-    "VisitorTelephone": { "FieldID": "F9", "Type": "str", "Required": true, "Value": null },
-    "VisitorDOBYear": { "FieldID": "G11", "Type": "str", "Required": true, "Value": null },
-    "VisitorDOBMonth": { "FieldID": "I11", "Type": "str", "Required": true, "Value": null },
-    "VisitorDOBDay": { "FieldID": "K11", "Type": "str", "Required": true, "Value": null },
-    "VisitorRelation" : {
-       "Type": "RadioList",
-       "Required": true,
-       "Fields": {
-          "Person": { "Type": "Radio", "FieldID": "C14", "Value": false },
-          "Representive": { "Type": "Radio", "FieldID": "C16", "Value": false },
-          "Other": { 
-            "Type": "RadioWithValue",
+[
+  {
+    "Label": "DocumentDate",
+    "Id": "0",
+    "Fields": [
+      {
+        "Label": "DocumentDateField",
+        "FieldID": "Group-F7",
+        "Type": "date",
+        "Required": true,
+        "Children": {
+          "year": "F7",
+          "month": "I7",
+          "day": "K7"
+        }
+      }
+    ]
+  },
+  {
+    "Label": "Visitor",
+    "Id": "1",
+    "Fields": [
+      {
+        "Label": "Address",
+        "FieldID": "C8",
+        "Type": "str",
+        "Required": true
+      },
+      {
+        "Label": "AddressFurigana",
+        "FieldID": "C10",
+        "Type": "str",
+        "Required": true
+      },
+      {
+        "Label": "Name",
+        "FieldID": "C11",
+        "Type": "str",
+        "Required": true
+      },
+      {
+        "Label": "Telephone",
+        "FieldID": "F9",
+        "Type": "str",
+        "Required": true
+      },
+      {
+        "Label": "DateOfBirth",
+        "FieldID": "Group-G11",
+        "Type": "date",
+        "Required": true,
+        "Children": {
+          "year": "G11",
+          "month": "I11",
+          "day": "K11"
+        }
+      }
+    ]
+  },
+  {
+    "Label": "VisitorRelation",
+    "Id": "2",
+    "Fields": [
+      {
+        "Label": "VisitorRelation",
+        "Type": "radioList",
+        "FieldID": "Group-C14",
+        "BlockID": "2",
+        "Required": true,
+        "Children": [
+          {
+            "Label": "Person",
+            "FieldID": "C14",
+            "Type": "bool"
+          },
+          {
+            "Label": "Representive",
+            "FieldID": "C16",
+            "Type": "bool"
+          },
+          {
+            "Label": "Other",
             "FieldID": "F16",
-            "ChildValue": {
-               "Type": "str",
-               "FieldID": "I16", 
-               "Value": null
-            }
-         }    
-       }
-    }
-}
+            "BlockID": "2",
+            "Type": "boolWithValue",
+            "Children": [
+              {
+                "Label": "OtherText",
+                "FieldID": "I16",
+                "Type": "str"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
