@@ -171,7 +171,7 @@ def fill_up(request: Request, form_id: str, in_data: TemplateFillerData) -> Fill
 
 
 @router.get(path='/template/markup/{markup_name}')
-async def get_markup(markup_name: str):
+async def get_markup(markup_name: str) -> dict:
 
     @cache
     def get_markup(form_name: str) -> dict | None:
