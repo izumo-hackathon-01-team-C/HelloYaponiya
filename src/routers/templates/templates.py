@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from functools import cache
 
 import fastapi
 from fastapi import Request, UploadFile, Form
@@ -168,3 +168,24 @@ async def update_template(
 @router.get(path="/template/fill_up/{form_id}")
 def fill_up(request: Request, form_id: str, in_data: TemplateFillerData) -> FillUpResult:
     return FillUpResult(lang=in_data.lang, japanese=None, local=None)
+
+
+@router.get(path='/template/markup/{markup_name}')
+async def get_markup(markup_name: str):
+
+    @cache
+    def get_markup(form_name: str) -> dict | None:
+        with open('src/fixtures/form_pairs.json') as file:
+            json_data = json.load(file)
+
+        if form_path := json_data.get(form_name):
+            with open(form_path) as form_file:
+                return json.load(form_file)
+
+    if markup := get_markup(markup_name):
+        return markup
+    else:
+        raise fastapi.HTTPException(
+            status_code=fastapi.status.HTTP_404_NOT_FOUND,
+            detail='Markup not found'
+        )
