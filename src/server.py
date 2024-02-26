@@ -2,9 +2,8 @@ from fastapi import FastAPI
 
 from tortoise import Tortoise
 
-from routers import templates
-from settings import settings
-from database.models import CategoryDBModel
+from src.routers.templates import templates
+from src.settings import settings
 
 
 async def create_db_client() -> Tortoise:
@@ -12,7 +11,7 @@ async def create_db_client() -> Tortoise:
     await db_client.init(
         db_url=settings.db_uri,
         modules={
-            'models': ['database.models']
+            'models': ['src.database.models']
         }
     )
 
@@ -20,7 +19,7 @@ async def create_db_client() -> Tortoise:
 
 
 def create_app() -> FastAPI:
-    app = FastAPI()
+    app = FastAPI(debug=True)
     app.include_router(templates.router)
 
     @app.on_event('startup')
