@@ -10,7 +10,9 @@ import fastapi
 from fastapi import Request
 from fastapi.routing import APIRouter
 
-from src.database.models import FormTemplateDBModel
+from tortoise.exceptions import DoesNotExist, MultipleObjectsReturned
+
+from database.models import FormTemplateDBModel
 
 router = APIRouter()
 
@@ -93,18 +95,28 @@ class Section:
 
 
 @router.post(path="/template/create")
-def create_template(request: Request, source: TemplateBuildSources) -> str:
+async def create_template(request: Request, source: TemplateBuildSources) -> str:
     """A method to create template for form in Adalo/PythonServer"""
 
-    if source.name in request.app.state.db.templates.keys(): #TODO: set actual name
+    try:
+        await FormTemplateDBModel.get( name=source.name )
         raise fastapi.HTTPException(status_code=fastapi.status.HTTP_400_BAD_REQUEST,
                                     detail=f"Template with name '{source.name}' already exists. "
                                            "To update it use '/temlate/update' endpoint")
+    except MultipleObjectsReturned:
+        raise fastapi.HTTPException(status_code=fastapi.status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                    detail="Incorrect state")
+    except DoesNotExist:
+        pass
+        
     
-    FormTemplateDBModel.
-    source.name
-    source.template_xlsx_file
-    source.markup_json
+    
+    FormTemplateDBModel.create( 
+        name = source.name,
+        excel_data = source.excel_data,
+        markup_data = source.markup_data
+    )
+    idx = FormTemplateDBModel.get( name = source)
      
     return json.dumps(dict())
 
