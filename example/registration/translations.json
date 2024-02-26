@@ -36,7 +36,26 @@
         "Please present a driver's license or other form of ID.":
 			"Please present a driver's license or other form of ID.",
         "A representative cannot apply without a POA":
-			"A representative cannot apply without a POA"
+			"A representative cannot apply without a POA",
+
+        "AddressFurigana":
+            "Address (Furigana)",
+        "Telephone":
+            "Telephone",
+        "DOBYear":
+            "DOB Year",
+        "DOBMonth":
+            "DOB Month",
+        "DOBDay":
+            "DOB Day",
+        "VisitorRelation":
+            "Visitor Relation",
+        "Person":
+            "Person",
+        "Representive":
+            "Representive",
+        "OtherText":
+            "Other Text"
     },
 	"jp":
     {
