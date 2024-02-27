@@ -20,16 +20,16 @@ from spire.xls.common import *
 # from spire.xls.common import PdfConformanceLevel, FileFormat
 
 
-from ..routers.templates import Languages
+from ..models.enums import LanguageEnum 
 
 class FormProducer: 
     """A class to fill form template with data and produce form and jp-translated form"""
     def __init__( self,
                  template: bytes,
-                 lang: Languages,
+                 lang: LanguageEnum,
                  localizations: dict,
                  answer_data: dict ):
-        self._locality_jp: dict = localizations[ Languages.Japanese ] 
+        self._locality_jp: dict = localizations[ LanguageEnum.JAPANESE ] 
         self._locality_target: dict = localizations[ lang ] 
         self._template: bytes = template
         self._answer_data: dict = answer_data
@@ -68,10 +68,10 @@ class FormProducer:
                 translation[ key ] = result
                 continue
             pending_translation[ key ] = data_to_translate[ key ]
-        translation.update( await self._translate_using_external_service( pending_translation, Languages.Japanese ) )
+        translation.update( await self._translate_using_external_service( pending_translation, LanguageEnum.JAPANESE ) )
         return translation
 
-    async def _translate_using_external_service( self, data_to_translate: dict, lang: Languages ) -> dict:
+    async def _translate_using_external_service( self, data_to_translate: dict, lang: LanguageEnum ) -> dict:
         """A function to transalte incoming data to Japanese using external services """
         #TODO: 
         return data_to_translate

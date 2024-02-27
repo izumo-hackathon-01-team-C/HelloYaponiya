@@ -4,7 +4,7 @@ import asyncio
 
 
 from ..formproc.formproc import FormProducer
-from ..routers.templates import Languages
+from ..models.enums import LanguageEnum 
 
 class Invoker:
     root = "example/registration"
@@ -14,7 +14,7 @@ class Invoker:
         form = FormProducer(
             #os.listdir( os.getcwd() + "/example/registration" )
             template=open( f"{ cls.root }/registration.xlsx", "rb" ).read(),
-            lang=Languages.English,
+            lang=LanguageEnum.ENGLISH,
             localizations=json.load( open( f"{ cls.root }/translations.json", "r" ) ),
             answer_data= json.load( open( f"{ cls.root }/answer.json", "r" ) )
         )
