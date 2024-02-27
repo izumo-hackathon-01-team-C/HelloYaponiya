@@ -1,103 +1,83 @@
 {
-	"eng":
-    {
-        "Certificate of Residence or Certificate of Items Stated in Resident Register (JUUMINHYOU)":
-			"Certificate of Residence or Certificate of Items Stated in Resident Register (JUUMINHYOU)",
-        "To the mayor of Izumo City":
-			"To the mayor of Izumo City",
-        "Please provide your information in the boxes below":
-			"Please provide your information in the boxes below",
-        "Year":
-			"Year",
-        "Month":
-			"Month",
-        "Day":
-			"Day",
-        "Guests visiting the service counter":
-			"Guests visiting the service counter",
-        "Address":
-			"Address",
-        "Telephone Number":
-			"Telephone Number",
-        "Date of Birth":
-			"Date of Birth",
-        "Name":
-			"Name",
-        "Relation e.g. to the person seeking the certificate (circle one that applies)":
-			"Relation e.g. to the person seeking the certificate (circle one that applies)",
-        "Person in question or member of the same household":
-			"Person in question or member of the same household",
-        "Representive (Power of Auttorney(POA) necessary)":
-			"Representive (Power of Auttorney(POA) necessary)",
-        "Other":
-			"Other",
-        "We will check for ID of the customer visiting the desk":
-			"We will check for ID of the customer visiting the desk",
-        "Please present a driver's license or other form of ID.":
-			"Please present a driver's license or other form of ID.",
-        "A representative cannot apply without a POA":
-			"A representative cannot apply without a POA",
-
-        "AddressFurigana":
-            "Address (Furigana)",
-        "Telephone":
-            "Telephone",
-        "DOBYear":
-            "DOB Year",
-        "DOBMonth":
-            "DOB Month",
-        "DOBDay":
-            "DOB Day",
-        "VisitorRelation":
-            "Visitor Relation",
-        "Person":
-            "Person",
-        "Representive":
-            "Representive",
-        "OtherText":
-            "Other Text",
-        "Applicant who will use the certificate (Fill in only for 2.3)":
-            "Applicant who will use the certificate (Fill in only for 2.3)"
-    },
-	"jpn":
-    {
-        "Certificate of Residence or Certificate of Items Stated in Resident Register (JUUMINHYOU)":
-			"住民票記載事項証明書",
-        "To the mayor of Izumo City":
-			"出雲市長様",
-        "Please provide your information in the boxes below":
-			"太ワクの中の該当する事項を記入してください",
-        "Year":
-			"年",
-        "Month":
-			"月",
-        "Day":
-			"日",
-        "Guests visiting the service counter":
-			"窓口に来られた人",
-        "Address":
-			"住所",
-        "Telephone Number":
-			"電話番号",
-        "Date of Birth":
-			"生年月日",
-        "Name":
-			"署名",
-        "Relation e.g. to the person seeking the certificate (circle one that applies)":
-			"必要な人から見た(該当にO)",
-        "Person in question or member of the same household":
-			"本人または同一世帯員",
-        "Representive (Power of Auttorney(POA) necessary)":
-			"代理人（委任状が必要）",
-        "Other":
-			"その他",
-        "We will check for ID of the customer visiting the desk":
-			"窓口に来られた人の本人確認を行います。",
-        "Please present a driver's license or other form of ID.":
-			"受付の際に運転免許証などの身分証書を提示してください。",
-        "A representative cannot apply without a POA":
-			"「2. 代理人」に該当する場合は、変任状がなければ交付することができません。",
-        "Applicant who will use the certificate (Fill in only for 2.3)":
-            "証明書を使用する申請者（2.3のみ記入"
-    }
+  "eng": {
+    "Certificate of Residence or Certificate of Items Stated in Resident Register (JUUMINHYOU)": "Certificate of Residence or Certificate of Items Stated in Resident Register (JUUMINHYOU)",
+    "To the mayor of Izumo City": "To the mayor of Izumo City",
+    "Please provide your information in the boxes below": "Please provide your information in the boxes below",
+    "Year": "Year",
+    "Month": "Month",
+    "Day": "Day",
+    "Guests visiting the service counter": "Guests visiting the service counter",
+    "Address": "Address",
+    "Telephone Number": "Telephone Number",
+    "Date of Birth": "Date of Birth",
+    "Name": "Name",
+    "Relation e.g. to the person seeking the certificate (circle one that applies)": "Relation e.g. to the person seeking the certificate (circle one that applies)",
+    "Person in question or member of the same household": "Person in question or member of the same household",
+    "Representive (Power of Auttorney(POA) necessary)": "Representive (Power of Auttorney(POA) necessary)",
+    "Other": "Other",
+    "We will check for ID of the customer visiting the desk": "We will check for ID of the customer visiting the desk",
+    "Please present a driver's license or other form of ID.": "Please present a driver's license or other form of ID.",
+    "A representative cannot apply without a POA": "A representative cannot apply without a POA",
+    "AddressFurigana": "Address (Furigana)",
+    "Telephone": "Telephone",
+    "DOBYear": "DOB Year",
+    "DOBMonth": "DOB Month",
+    "DOBDay": "DOB Day",
+    "VisitorRelation": "Visitor Relation",
+    "Person": "Person",
+    "Representive": "Representive",
+    "OtherText": "Other Text",
+    "Applicant who will use the certificate (Fill in only for 2.3)": "Applicant who will use the certificate (Fill in only for 2.3)"
+  },
+  "jpn": {
+    "Certificate of Residence or Certificate of Items Stated in Resident Register (JUUMINHYOU)": "住民票記載事項証明書",
+    "To the mayor of Izumo City": "出雲市長様",
+    "Please provide your information in the boxes below": "太ワクの中の該当する事項を記入してください",
+    "Year": "年",
+    "Month": "月",
+    "Day": "日",
+    "Guests visiting the service counter": "窓口に来られた人",
+    "Address": "住所",
+    "Telephone Number": "電話番号",
+    "Date of Birth": "生年月日",
+    "Name": "署名",
+    "Relation e.g. to the person seeking the certificate (circle one that applies)": "必要な人から見た(該当にO)",
+    "Person in question or member of the same household": "本人または同一世帯員",
+    "Representive (Power of Auttorney(POA) necessary)": "代理人（委任状が必要）",
+    "Other": "その他",
+    "We will check for ID of the customer visiting the desk": "窓口に来られた人の本人確認を行います。",
+    "Please present a driver's license or other form of ID.": "受付の際に運転免許証などの身分証書を提示してください。",
+    "A representative cannot apply without a POA": "「2. 代理人」に該当する場合は、変任状がなければ交付することができません。",
+    "Applicant who will use the certificate (Fill in only for 2.3)": "証明書を使用する申請者（2.3のみ記入"
+  },
+  "rus": {
+    "Certificate of Residence or Certificate of Items Stated in Resident Register (JUUMINHYOU)": "Свидетельство о месте жительства или свидетельство о данных, указанных в реестре жителей (JUUMINHYOU)",
+    "To the mayor of Izumo City": "Мэру города Идзумо",
+    "Please provide your information in the boxes below": "Пожалуйста, укажите свою информацию в полях ниже",
+    "Year": "Год",
+    "Month": "Месяц",
+    "Day": "День",
+    "Guests visiting the service counter": "Посетители, обращающиеся в службу",
+    "Address": "Адрес",
+    "Telephone Number": "Номер телефона",
+    "Date of Birth": "Дата рождения",
+    "Name": "Имя",
+    "Relation e.g. to the person seeking the certificate (circle one that applies)": "Отношение, например, к лицу, запрашивающему сертификат (отметьте подходящий вариант)",
+    "Person in question or member of the same household": "Лицо, запрашивающее сертификат, или член семьи",
+    "Representive (Power of Auttorney(POA) necessary)": "Представитель (необходимо наличие доверенности)",
+    "Other": "Другое",
+    "We will check for ID of the customer visiting the desk": "Мы проверим удостоверение личности клиента, посещающего стол",
+    "Please present a driver's license or other form of ID.": "Пожалуйста, предъявите водительские права или другой документ, удостоверяющий личность.",
+    "A representative cannot apply without a POA": "Представитель не может подать заявку без доверенности",
+    "AddressFurigana": "Адрес (фуригана)",
+    "Telephone": "Телефон",
+    "DOBYear": "Год рождения",
+    "DOBMonth": "Месяц рождения",
+    "DOBDay": "День рождения",
+    "VisitorRelation": "Отношение посетителя",
+    "Person": "Лицо",
+    "Representive": "Представитель",
+    "OtherText": "Другой текст",
+    "Applicant who will use the certificate (Fill in only for 2.3)": "Заявитель, который будет использовать сертификат (заполните только для 2.3)"
+  }
 }
