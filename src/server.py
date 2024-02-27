@@ -63,14 +63,15 @@ def create_app() -> FastAPI:
 
     @app.on_event('startup')
     async def startup() -> None:
-        app.state.db = await create_db_client()
-        await app.state.db.generate_schemas()
+        # app.state.db = await create_db_client()
+        # await app.state.db.generate_schemas()
 
         prepare_fixtures(app)
 
     @app.on_event('shutdown')
     async def shutdown() -> None:
-        await app.state.db.close_connections()
+        ...
+        # await app.state.db.close_connections()
 
     return app
 
