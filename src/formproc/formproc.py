@@ -8,11 +8,13 @@ from asyncio import run as aiorun
 
 from openpyxl import load_workbook, Workbook
 from openpyxl.worksheet.worksheet import Worksheet
-from spire import xls
-from spire.xls.common import PdfConformanceLevel, FileFormat
+from spire.xls import *
+from spire.xls.common import *
+# from spire import xls
+# from spire.xls.common import PdfConformanceLevel, FileFormat
 
 
-from ..routers import Languages
+from ..routers.templates import Languages
 
 class FormProducer: 
     """A class to fill form template with data and produce form and jp-translated form"""
@@ -26,11 +28,13 @@ class FormProducer:
         self._template: bytes = template
         self._answer_data: dict = answer_data
         self._jp_answer_data: dict = self._translate_jp( answer_data )
-        return aiorun( self.create_filled_form_on_current_data )
+
+    async def execute(self):
+        return await self.create_filled_form_on_current_data()
         
     async def create_filled_form_on_current_data( self ):
         """A function to execute asynchronious parallel form"""
-        with TaskGroup() as tg:
+        async with TaskGroup() as tg:
             jp_coro = tg.create_task( 
                 coro = self.create_pdf_from_template( locality=self._locality_jp,
                                                       answers=self._answer_data )
@@ -42,7 +46,7 @@ class FormProducer:
         self.jp_doc = jp_coro.result()
         self.target_doc = local_coro.result()
 
-    async def _translate_jp( self, data_to_translate: dict, lang: Languages ) -> dict:
+    async def _translate_jp( self, data_to_translate: dict) -> dict:
         """A function  to translate answer data from presets to Japanese"""
         translation = {}
         pending_translation = {}
@@ -65,6 +69,7 @@ class FormProducer:
 
     async def _create_pdf( self, wb: Workbook ) -> bytes:
         """Create PDF/A from Workbook"""
+        #TODO: Move write to asyncio 
         openpxyl_wb_bytes = BytesIO()
         wb.save( openpxyl_wb_bytes )
         xls_wb = xls.Workbook()

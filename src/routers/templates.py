@@ -12,7 +12,7 @@ from fastapi.routing import APIRouter
 
 from tortoise.exceptions import DoesNotExist, MultipleObjectsReturned
 
-from database.models import FormTemplateDBModel
+from ..database.models import FormTemplateDBModel
 
 router = APIRouter()
 
