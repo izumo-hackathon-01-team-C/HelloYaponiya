@@ -25,15 +25,10 @@ async def create_db_client() -> Tortoise:
 
 
 def prepare_fixtures(app: FastAPI) -> None:
-    with open('src/fixtures/formatted_locales.csv') as file:
-        reader = csv.DictReader(file)
+    with open('src/fixtures/formatted_locales.json') as file:
+        json_data = json.load(file)
 
-        translation_fixtures = {}
-        for row in reader:
-            lang_dict = translation_fixtures.setdefault(row['iso_lang'], {})
-            lang_dict[row['key']] = row['value']
-
-    app.state.translation_fixtures = translation_fixtures
+    app.state.translation_fixtures = json_data
 
     class FileManager:
         def __init__(self, file_pairs: dict):

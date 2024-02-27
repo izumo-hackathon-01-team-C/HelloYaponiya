@@ -76,7 +76,7 @@ class TranslationClient:
 #     "I16": "Other relations"
 # }
 #
-#     client = TranslationClient(api_key='AIzaSyD2nVUa897B_zJjxVFdXSGO_7m6Y4tbJQ0')
+#     client = TranslationClient(api_key='oh_my')
 #     print(await client.translate_key_value_dict(data, from_lang='en', to_lang='ja'))
 #
 # asyncio.run(main())
