@@ -436,17 +436,6 @@ files = [
 et-xmlfile = "*"
 
 [[package]]
-name = "plum-dispatch"
-version = "1.7.4"
-description = "Multiple dispatch in Python"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "plum-dispatch-1.7.4.tar.gz", hash = "sha256:1c1d15b2842b5fa98405fd3dff6fad4887bdc77b60bd200e209d76ebfe9990fe"},
-    {file = "plum_dispatch-1.7.4-py3-none-any.whl", hash = "sha256:c40dbeab269bbbf972ce0dbc078380da19ebaee1a370a2c564e1814a11bde216"},
-]
-
-[[package]]
 name = "pydantic"
 version = "2.6.2"
 description = "Data validation using Python type hints"
@@ -580,20 +569,6 @@ files = [
     {file = "sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2"},
     {file = "sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"},
 ]
-
-[[package]]
-name = "spire-xls"
-version = "13.12.6"
-description = "A 100% standalone Excel Python API for Processing Excel Files"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "Spire.Xls-13.12.6-py3-none-manylinux1_x86_64.whl", hash = "sha256:5dd0ef89968ff69c02c22a1bc50381c302280e575fc7acf846590b2988756d36"},
-    {file = "Spire.Xls-13.12.6-py3-none-win_amd64.whl", hash = "sha256:de8f10d7e9e0232fca6bf2719ff14b65838a39103762447c05def3d64f0c014c"},
-]
-
-[package.dependencies]
-plum-dispatch = "1.7.4"
 
 [[package]]
 name = "starlette"
@@ -747,4 +722,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "bd503028d17f37d4c22f0de94ff9ab25560b8f8c3f80f5889dfba6c5e2cf5e3a"
+content-hash = "6308e213f19298baaee979893436ea281d71c235b7287c8360cc1b4368ed853d"
