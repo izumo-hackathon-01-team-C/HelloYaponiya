@@ -2,7 +2,9 @@ FROM tiangolo/uvicorn-gunicorn:python3.11
 
 WORKDIR /opt/helloyaponiya
 
-RUN apt update && apt install -y libreoffice && python -m pip install poetry
+RUN apt update && apt install -y libreoffice && apt -y install locales && locale-gen en_US.UTF-8 && python -m pip install poetry
+
+ENV LANG=en_US.UTF-8
 
 COPY .. /opt/helloyaponiya
 

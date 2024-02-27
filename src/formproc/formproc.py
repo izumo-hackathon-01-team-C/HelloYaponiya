@@ -1,4 +1,5 @@
 from datetime import datetime
+from os import getenv
 
 import subprocess
 from io import BytesIO
@@ -16,6 +17,7 @@ from openpyxl import Workbook as OpxlWorkbook
 from openpyxl.worksheet.worksheet import Worksheet
 
 from ..models.enums import LanguageEnum 
+from ..translation_api.client import TranslationClient
 
 class FormProducer: 
     """A class to fill form template with data and produce form and jp-translated form"""
@@ -24,6 +26,7 @@ class FormProducer:
                  lang: LanguageEnum,
                  localizations: dict,
                  answer_data: dict ):
+        self._lang = lang
         self._locality_jp: dict = localizations[ LanguageEnum.JAPANESE ] 
         self._locality_target: dict = localizations[ lang ] 
         self._template: bytes = template
@@ -44,14 +47,14 @@ class FormProducer:
         async with TaskGroup() as tg:
             jp_coro = tg.create_task( 
                 coro = self.create_pdf_from_template( locality=self._locality_jp,
-                                                      answers=self._answer_data )
+                                                      answers=self._jp_answer_data )
             )
-            local_coro = tg.create_task(
-                coro = self.create_pdf_from_template( locality=self._locality_target,
-                                                      answers=self._jp_answer_data  )
-            )
+            # local_coro = tg.create_task(
+            #     coro = self.create_pdf_from_template( locality=self._locality_target,
+            #                                           answers=self._jp_answer_data  )
+            # )
         self.jp_doc = jp_coro.result()
-        self.target_doc = local_coro.result()
+        #self.target_doc = local_coro.result()
 
     async def _translate_jp( self, data_to_translate: dict) -> dict:
         """A function  to translate answer data from presets to Japanese"""
@@ -63,13 +66,18 @@ class FormProducer:
                 translation[ key ] = result
                 continue
             pending_translation[ key ] = data_to_translate[ key ]
-        translation.update( await self._translate_using_external_service( pending_translation, LanguageEnum.JAPANESE ) )
+        translation.update( await self._translate_using_external_service( pending_translation, self._lang, LanguageEnum.JAPANESE ) )
         return translation
 
-    async def _translate_using_external_service( self, data_to_translate: dict, lang: LanguageEnum ) -> dict:
+    async def _translate_using_external_service( self, data_to_translate: dict, source_lang: LanguageEnum, target_lang: LanguageEnum ) -> dict:
         """A function to transalte incoming data to Japanese using external services """
-        #TODO: 
-        return data_to_translate
+        apikey = getenv( "GOOGLE_API" )
+        tr = TranslationClient( apikey )
+        return await tr.translate_key_value_dict(
+            data=data_to_translate,
+            from_lang=source_lang,
+            to_lang=target_lang
+        )
     
     async def create_pdf_from_template( self, locality: dict, answers: dict ) -> bytes:
         return await self._create_pdf( await self._fill( locality, answers ) )
