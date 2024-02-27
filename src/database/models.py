@@ -37,9 +37,9 @@ class FormMetadataDBModel(Model):
 
     description = fields.TextField()
 
-    form = fields.ForeignKeyField('models.FormTemplateDBModel', related_name='form_metadata')
-    category = fields.ForeignKeyField('models.CategoryDBModel', related_name='form_metadata')
-    section = fields.ForeignKeyField('models.SectionDBModel', related_name='form_metadata')
+    template = fields.ForeignKeyField('models.FormTemplateDBModel', related_name='form_metadata')
+    # category = fields.ForeignKeyField('models.CategoryDBModel', related_name='form_metadata')
+    # section = fields.ForeignKeyField('models.SectionDBModel', related_name='form_metadata')
 
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
@@ -51,10 +51,12 @@ class FormMetadataDBModel(Model):
 class LocalizationDBModel(Model):
     id = fields.IntField(pk=True)
 
-    form = fields.ForeignKeyField('models.FormTemplateDBModel', related_name='form_localizations')
-    name = fields.CharField(max_length=1000)
-    lang = fields.CharField(max_length=10)
+    template = fields.ForeignKeyField('models.FormTemplateDBModel', related_name='form_localizations')
+
+    key = fields.CharField(max_length=1000)
     value = fields.CharField(max_length=1000)
+
+    lang = fields.CharField(max_length=10)
 
     class Meta:
         table = "form_localizations"

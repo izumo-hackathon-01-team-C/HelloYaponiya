@@ -1,4 +1,4 @@
-from pydantic import BaseConfig, AnyUrl, AmqpDsn
+from pydantic import BaseConfig, AnyUrl
 
 
 class Settings(BaseConfig):
