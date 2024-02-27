@@ -1,3 +1,7 @@
 {
-  "registration": "example/registration/markup.json"
+  "registration": {
+    "markup": "example/registration/markup.json",
+    "template": "example/registration/registration.xlsx",
+    "translations": "example/registration/translations.json"
+  }
 }
