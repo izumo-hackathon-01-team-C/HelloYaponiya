@@ -55,7 +55,9 @@
         "Representive":
             "Representive",
         "OtherText":
-            "Other Text"
+            "Other Text",
+        "Applicant who will use the certificate (Fill in only for 2.3)":
+            "Applicant who will use the certificate (Fill in only for 2.3)"
     },
 	"jpn":
     {
@@ -94,6 +96,8 @@
         "Please present a driver's license or other form of ID.":
 			"受付の際に運転免許証などの身分証書を提示してください。",
         "A representative cannot apply without a POA":
-			"「2. 代理人」に該当する場合は、変任状がなければ交付することができません。"
+			"「2. 代理人」に該当する場合は、変任状がなければ交付することができません。",
+        "Applicant who will use the certificate (Fill in only for 2.3)":
+            "証明書を使用する申請者（2.3のみ記入"
     }
 }
