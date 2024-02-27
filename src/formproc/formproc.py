@@ -1,12 +1,18 @@
 from datetime import datetime
+
+import subprocess
 from io import BytesIO
-from tempfile import NamedTemporaryFile
-from re import match, compile, sub 
-from asyncio import TaskGroup, create_task
+from tempfile import NamedTemporaryFile, TemporaryDirectory
+
+from re import match, compile, sub, search 
+from pathlib import Path
+
+from asyncio import TaskGroup, create_task, get_event_loop
 from asyncio import run as aiorun
 
 
-from openpyxl import load_workbook, Workbook
+from openpyxl import load_workbook 
+from openpyxl import Workbook as OpxlWorkbook
 from openpyxl.worksheet.worksheet import Worksheet
 from spire.xls import *
 from spire.xls.common import *
@@ -27,9 +33,15 @@ class FormProducer:
         self._locality_target: dict = localizations[ lang ] 
         self._template: bytes = template
         self._answer_data: dict = answer_data
-        self._jp_answer_data: dict = self._translate_jp( answer_data )
+        self._replace_bools_with_checkboxes( self._answer_data )
+
+    def _replace_bools_with_checkboxes( self, answer_data: dict ):
+        for key, value in answer_data.items():
+            if isinstance( value, bool ):
+                answer_data[ key ] = "■" if value else "☐" 
 
     async def execute(self):
+        self._jp_answer_data: dict = await self._translate_jp( self._answer_data ) 
         return await self.create_filled_form_on_current_data()
         
     async def create_filled_form_on_current_data( self ):
@@ -56,7 +68,7 @@ class FormProducer:
                 translation[ key ] = result
                 continue
             pending_translation[ key ] = data_to_translate[ key ]
-        translation.update( await self._translate_using_external_service( pending_translation ) )
+        translation.update( await self._translate_using_external_service( pending_translation, Languages.Japanese ) )
         return translation
 
     async def _translate_using_external_service( self, data_to_translate: dict, lang: Languages ) -> dict:
@@ -67,32 +79,54 @@ class FormProducer:
     async def create_pdf_from_template( self, locality: dict, answers: dict ) -> bytes:
         return await self._create_pdf( await self._fill( locality, answers ) )
 
-    async def _create_pdf( self, wb: Workbook ) -> bytes:
+    async def _create_pdf( self, wb: OpxlWorkbook ) -> bytes:
         """Create PDF/A from Workbook"""
         #TODO: Move write to asyncio 
-        openpxyl_wb_bytes = BytesIO()
-        wb.save( openpxyl_wb_bytes )
-        xls_wb = xls.Workbook()
-        xls_wb.LoadFromStream( stream=openpxyl_wb_bytes.getvalue() )
-        xls_wb.ConverterSetting.PdfConformanceLevel = PdfConformanceLevel.Pdf_A1A
-        inmem_file = NamedTemporaryFile( )
-        xls_wb.SaveToFile( inmem_file.name, FileFormat.PDF )
-        return inmem_file.read()
+        in_inmem_file = NamedTemporaryFile( )
+        wb.save( in_inmem_file.name )
+        return self.convert_pdf_libreoffice( source_file=in_inmem_file )
+    
+    def convert_pdf_libreoffice( self, source_file: NamedTemporaryFile ) -> bytes:
+        with TemporaryDirectory() as out_dir:
+            #dev_null = open(os.devnull, 'w')
+            subprocess.run( ['libreoffice',
+                                '--headless',
+                                "--nologo",
+                                "--nofirststartwizard",
+                                '--convert-to',
+                                'pdf',
+                                '--outdir',
+                                out_dir,
+                                source_file.name ], )
+                             #stderr=dev_null,
+                             #stdout=dev_null )
+            #dev_null.close()
+            files = Path( out_dir ).glob('*.pdf')
+            with open( list( files )[ 0 ], "rb" ) as src:
+                return src.read()
 
-    async def _fill( self, locality: dict, answers: dict ) -> Workbook:
+
+    async def _fill( self, locality: dict, answers: dict ) -> OpxlWorkbook:
         """A function to fill data in the workbook"""
         wb = load_workbook( filename=BytesIO( self._template ) )
         for sheet in wb:
             self._replace_placeholders_on_worksheet( sheet=sheet, locality=locality )
             self._fill_worksheet_by_index_value_dict( sheet=sheet, idx_value_dict=answers )
+        return wb
 
 
     def _replace_placeholders_on_worksheet( self, sheet: Worksheet, locality: dict ) -> None:
         """A function to replace placeholders {{key}}-marked with locality values"""
-        placeholder_pattern = compile( r"{{*}}" )
+        placeholder_pattern = compile( r"{{.*}}" )
         for row in sheet:
             for cell in row:
-                key = match( placeholder_pattern, cell.value )
+                if cell.value is None or r"{{" not in cell.value:
+                    continue 
+                key = search( placeholder_pattern, cell.value ).string
+                if key is None:
+                    continue
+                key = sub( r"^.*{{", "", key)
+                key = sub( r"}}.*", "", key)
                 cell.value = sub( placeholder_pattern, locality[ key ], cell.value )
 
     def _fill_worksheet_by_index_value_dict( self, sheet: Worksheet, idx_value_dict: dict ):
