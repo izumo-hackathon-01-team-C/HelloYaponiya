@@ -178,13 +178,18 @@ def get_iterator(file):
 
 
 @router.post(path="/template/fill_up/{form_name}")
-async def fill_up(request: Request, form_name: str, answer: dict[str, str | bool | int]) -> StreamingResponse:
+async def fill_up(
+        request: Request,
+        form_name: str,
+        answer: dict[str, str | bool | int],
+        lang: LanguageEnum = LanguageEnum.ENGLISH
+) -> StreamingResponse:
     form = FormProducer(
         template=request.app.state.file_manager.get_file_by_form_name(
             form_name=form_name,
             file_type='template'
         ),
-        lang=LanguageEnum.ENGLISH,
+        lang=lang,
         localizations=json.loads(
             request.app.state.file_manager.get_file_by_form_name(
                 form_name=form_name,
