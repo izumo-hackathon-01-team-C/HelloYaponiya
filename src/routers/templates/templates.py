@@ -2,8 +2,9 @@ import json
 from functools import cache
 
 import fastapi
-from fastapi import Request, UploadFile, Form
+from fastapi import Request, UploadFile
 from fastapi.routing import APIRouter
+from fastapi.responses import StreamingResponse
 
 from pydantic import BaseModel, model_validator
 
@@ -165,25 +166,29 @@ async def update_template(
     )
 
 
-@router.get(path="/template/fill_up/{form_id}")
-def fill_up(request: Request, form_id: str, in_data: TemplateFillerData) -> FillUpResult:
-    return FillUpResult(lang=in_data.lang, japanese=None, local=None)
+@router.get(path="/template/fill_up/{form_name}")
+def fill_up(form_name: str, answer: dict[str, str]) -> StreamingResponse:
+    return StreamingResponse(b'123', media_type="application/pdf")
+
+
+
+@cache
+def get_markup(form_name: str) -> list | None:
+    with open('src/fixtures/form_pairs.json') as file:
+        json_data = json.load(file)
+
+    if form_path := json_data.get(form_name):
+        with open(form_path) as form_file:
+            return json.load(form_file)
 
 
 @router.get(path='/template/markup/{markup_name}')
-async def get_markup(markup_name: str) -> list:
+async def get_markup(request: Request, markup_name: str) -> list:
 
-    @cache
-    def get_markup(form_name: str) -> list | None:
-        with open('src/fixtures/form_pairs.json') as file:
-            json_data = json.load(file)
-
-        if form_path := json_data.get(form_name):
-            with open(form_path) as form_file:
-                return json.load(form_file)
-
-    if markup := get_markup(markup_name):
-        return markup
+    if markup := request.app.state.file_manager.get_file_by_form_name(
+        form_name=markup_name, file_type='markup'
+    ):
+        return json.loads(markup)
     else:
         raise fastapi.HTTPException(
             status_code=fastapi.status.HTTP_404_NOT_FOUND,
