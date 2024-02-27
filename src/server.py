@@ -1,6 +1,7 @@
 import csv
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from tortoise import Tortoise
 
@@ -38,7 +39,15 @@ def create_app() -> FastAPI:
 
     app.include_router(templates.router, tags=['Templates'])
     app.include_router(translations.router, tags=['Translations'])
-
+    # CORS
+    origins = [ "*" ]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
     @app.on_event('startup')
     async def startup() -> None:
         app.state.db = await create_db_client()
