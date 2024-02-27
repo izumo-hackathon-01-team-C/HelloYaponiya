@@ -13,6 +13,7 @@ from tortoise.transactions import in_transaction
 
 from src.database.models import FormTemplateDBModel, FormMetadataDBModel, LocalizationDBModel
 from src.models.enums import LanguageEnum
+from src.formproc.formproc import FormProducer
 
 
 router = APIRouter()
@@ -172,11 +173,29 @@ def fake_pdf() -> Iterable[bytes]:
             yield file.read()
 
 
+def get_iterator(file):
+    yield file
+
+
 @router.post(path="/template/fill_up/{form_name}")
-def fill_up(form_name: str, answer: dict[str, str]) -> StreamingResponse:
-    return StreamingResponse(fake_pdf(), media_type="application/pdf")
+async def fill_up(request: Request, form_name: str, answer: dict[str, str | bool | int]) -> StreamingResponse:
+    form = FormProducer(
+        template=request.app.state.file_manager.get_file_by_form_name(
+            form_name=form_name,
+            file_type='template'
+        ),
+        lang=LanguageEnum.ENGLISH,
+        localizations=json.loads(
+            request.app.state.file_manager.get_file_by_form_name(
+                form_name=form_name,
+                file_type='translations'
+            )
+        ),
+        answer_data=answer
+    )
+    await form.execute()
 
-
+    return StreamingResponse(get_iterator(form.jp_doc), media_type="application/pdf")
 
 
 @router.get('/template/get_pdf')
