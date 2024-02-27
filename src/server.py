@@ -4,8 +4,6 @@ import json
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from tortoise import Tortoise
-
 from src.routers.templates import templates
 from src.routers.translations import translations
 
