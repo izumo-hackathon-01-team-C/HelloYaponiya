@@ -249,3 +249,4 @@ poetry.lock
 
 # vsode
 .vscode/
+**/*.pdf
