@@ -166,15 +166,17 @@ class CreateTemplateResult(BaseModel):
 #     )
 
 
-@router.get(path="/template/fill_up/{form_name}")
-def fill_up(form_name: str, answer: dict[str, str]) -> StreamingResponse:
-    return StreamingResponse(b'123', media_type="application/pdf")
-
-
 def fake_pdf() -> Iterable[bytes]:
     with open('example/registration/fake_pdf.pdf', 'rb') as file:
         for i in range(1):
             yield file.read()
+
+
+@router.post(path="/template/fill_up/{form_name}")
+def fill_up(form_name: str, answer: dict[str, str]) -> StreamingResponse:
+    return StreamingResponse(fake_pdf(), media_type="application/pdf")
+
+
 
 
 @router.get('/template/get_pdf')
