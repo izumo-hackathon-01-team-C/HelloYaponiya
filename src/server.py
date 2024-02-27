@@ -46,10 +46,11 @@ def prepare_fixtures(app: FastAPI) -> None:
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(debug=True)
+    app = FastAPI(debug=settings.debug)
 
     app.include_router(templates.router, tags=['Templates'])
     app.include_router(translations.router, tags=['Translations'])
+
     # CORS
     origins = ["*"]
     app.add_middleware(
@@ -59,13 +60,13 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
     @app.on_event('startup')
     async def startup() -> None:
         app.state.db = await create_db_client()
         await app.state.db.generate_schemas()
 
         prepare_fixtures(app)
-
 
     @app.on_event('shutdown')
     async def shutdown() -> None:
