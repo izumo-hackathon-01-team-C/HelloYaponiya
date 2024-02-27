@@ -4,6 +4,27 @@ from typing import Any
 import aiohttp
 
 
+ISO_TO_GOOGLE_LANG_MAPPING = {
+    "jpn": 'ja',
+    "eng": 'en',
+    "rus": 'ru',
+    "spa": 'es',
+    "tha": 'th',
+    "hin": 'hi',
+    "nep": 'ne',
+    "por": 'pt',
+    "chi": 'zh',
+    "fre": 'fr',
+    "ben": 'bn',
+    "ind": 'id',
+    "khm": 'km',
+    "bur": 'my',
+    "kor": 'ko',
+    "fil": 'fil',
+    "vie": 'vi',
+}
+
+
 class TranslationClient:
     def __init__(self, api_key: str):
         self._api_key = api_key
@@ -11,6 +32,9 @@ class TranslationClient:
     async def translate_key_value_dict(self, data: dict[str, Any], from_lang: str, to_lang: str) -> dict[str, str]:
         coro_list = []
         result = {}
+
+        from_lang = ISO_TO_GOOGLE_LANG_MAPPING.get(from_lang, from_lang)
+        to_lang = ISO_TO_GOOGLE_LANG_MAPPING.get(to_lang, to_lang)
 
         async with aiohttp.ClientSession() as session:
             for key, value in data.items():
@@ -54,7 +78,6 @@ class TranslationClient:
             }
         ) as r:
             result = await r.json()
-            print(result)
             return {key: result['data']['translations'][0]['translatedText']}
 
 
@@ -76,7 +99,7 @@ class TranslationClient:
 #     "I16": "Other relations"
 # }
 #
-#     client = TranslationClient(api_key='oh_my')
-#     print(await client.translate_key_value_dict(data, from_lang='en', to_lang='ja'))
+#     client = TranslationClient(api_key='oh-my')
+#     print(await client.translate_key_value_dict(data, from_lang='eng', to_lang='jpn'))
 #
 # asyncio.run(main())
