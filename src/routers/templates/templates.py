@@ -1,5 +1,5 @@
 import json
-from functools import cache
+from typing import Iterable
 
 import fastapi
 from fastapi import Request, UploadFile
@@ -169,6 +169,17 @@ class CreateTemplateResult(BaseModel):
 @router.get(path="/template/fill_up/{form_name}")
 def fill_up(form_name: str, answer: dict[str, str]) -> StreamingResponse:
     return StreamingResponse(b'123', media_type="application/pdf")
+
+
+def fake_pdf() -> Iterable[bytes]:
+    with open('example/registration/fake_pdf.pdf', 'rb') as file:
+        for i in range(1):
+            yield file.read()
+
+
+@router.get('/template/get_pdf')
+def get_pdf() -> StreamingResponse:
+    return StreamingResponse(fake_pdf(), media_type="application/pdf")
 
 
 @router.get(path='/template/markup/{markup_name}')
