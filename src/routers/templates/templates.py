@@ -194,6 +194,8 @@ async def fill_up(request: Request, form_name: str, answer: dict[str, str | bool
         answer_data=answer
     )
     await form.execute()
+    with open( "test.pdf", "wb") as dst:
+        dst.write( form.jp_doc )
 
     return StreamingResponse(get_iterator(form.jp_doc), media_type="application/pdf")
 
