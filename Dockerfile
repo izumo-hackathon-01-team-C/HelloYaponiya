@@ -1,11 +1,11 @@
-FROM linuxserver/libreoffice
+FROM tiangolo/uvicorn-gunicorn:python3.11
 
 WORKDIR /opt/helloyaponiya
 
-RUN apk install python3.11 && python3.11 -m pip install poetry unicorn 
+RUN apt update && apt install -y libreoffice && python -m pip install poetry
 
 COPY .. /opt/helloyaponiya
 
-RUN /usr/local/bin/poetry run uvicorn src.server:app --host 0.0.0.0 --port 8001
+RUN poetry update && poetry run  uvicorn  src.server:app --host 0.0.0.0 --port 8001
 
 EXPOSE 8001
