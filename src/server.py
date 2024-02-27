@@ -10,16 +10,16 @@ from src.routers.translations import translations
 from src.settings import settings
 
 
-async def create_db_client() -> Tortoise:
-    db_client = Tortoise()
-    await db_client.init(
-        db_url=settings.db_uri,
-        modules={
-            'models': ['src.database.models']
-        }
-    )
-
-    return db_client
+# async def create_db_client() -> Tortoise:
+#     db_client = Tortoise()
+#     await db_client.init(
+#         db_url=settings.db_uri,
+#         modules={
+#             'models': ['src.database.models']
+#         }
+#     )
+#
+#     return db_client
 
 
 def prepare_fixtures(app: FastAPI) -> None:
